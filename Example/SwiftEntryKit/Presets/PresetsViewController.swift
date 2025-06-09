@@ -885,6 +885,8 @@ extension PresetsViewController: UITableViewDelegate, UITableViewDataSource {
             customCellSelected(with: attributes, row: indexPath.row)
         case 6:
             showNavigationController(with: attributes)
+        case 7:
+            floatCellSelected(with: attributes, row: indexPath.row)
         default:
             break
         }
