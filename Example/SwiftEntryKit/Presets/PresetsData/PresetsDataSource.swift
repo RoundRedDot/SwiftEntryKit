@@ -116,6 +116,8 @@ struct PresetsDataSource {
         setupPopupPresets()
         setupFormPresets()
         setupCustomPresets()
+        setupPlaceholderPresets()
+        setupMultilevelWindowsPresets()
     }
     
     private mutating func setupToastPresets() {
@@ -1158,5 +1160,95 @@ struct PresetsDataSource {
         )
         presets.append(description)
         dataSource.append(("Custom", presets))
+    }
+    
+    private mutating func setupPlaceholderPresets() {
+        let placeholder: [PresetDescription] = []
+        dataSource.append(("Placeholder", placeholder))
+    }
+    
+    private mutating func setupMultilevelWindowsPresets() {
+        var multilevel: [PresetDescription] = []
+        var description: PresetDescription
+        var attributes: EKAttributes
+        var descriptionString: String
+        var descriptionThumb: String
+
+        // Preset I
+        attributes = .topFloat
+        attributes.displayMode = displayMode
+        attributes.hapticFeedbackType = .success
+        attributes.windowLevel = .custom(level: .normal + 1)
+        attributes.entryBackground = .gradient(
+            gradient: .init(
+                colors: [.amber, .pinky],
+                startPoint: .zero,
+                endPoint: CGPoint(x: 1, y: 1)
+            )
+        )
+        attributes.popBehavior = .animated(
+            animation: .init(
+                translate: .init(duration: 0.3),
+                scale: .init(from: 1, to: 0.7, duration: 0.7)
+            )
+        )
+        attributes.shadow = .active(
+            with: .init(
+                color: .black,
+                opacity: 0.5,
+                radius: 10
+            )
+        )
+        attributes.statusBar = .dark
+        attributes.scroll = .enabled(
+            swipeable: true,
+            pullbackAnimation: .easeOut
+        )
+        attributes.positionConstraints.maxSize = .init(
+            width: .constant(value: UIScreen.main.minEdge),
+            height: .intrinsic
+        )
+        descriptionString = "Top float with gradient background"
+        descriptionThumb = ThumbDesc.topFloat.rawValue
+        description = .init(
+            with: attributes,
+            title: "Top",
+            description: descriptionString,
+            thumb: descriptionThumb
+        )
+        multilevel.append(description)
+        
+        // Preset II
+        attributes = .bottomFloat
+        attributes.displayMode = displayMode
+        attributes.hapticFeedbackType = .success
+        attributes.windowLevel = .custom(level: .normal + 2)
+        attributes.entryBackground = .gradient(
+            gradient: .init(
+                colors: [Color.BlueGradient.dark, Color.BlueGradient.light],
+                startPoint: .zero,
+                endPoint: CGPoint(x: 1, y: 1)
+            )
+        )
+        attributes.entryInteraction = .delayExit(by: 3)
+        attributes.scroll = .enabled(
+            swipeable: true,
+            pullbackAnimation: .jolt
+        )
+        attributes.statusBar = .dark
+        attributes.positionConstraints.maxSize = .init(
+            width: .constant(value: UIScreen.main.minEdge),
+            height: .intrinsic
+        )
+        descriptionString = "Bottom float with gradient background. Touches delay exit"
+        descriptionThumb = ThumbDesc.bottomFloat.rawValue
+        description = .init(
+            with: attributes,
+            title: "Bottom",
+            description: descriptionString,
+            thumb: descriptionThumb
+        )
+        multilevel.append(description)
+        dataSource.append(("Multilevel Windows", multilevel))
     }
 }
